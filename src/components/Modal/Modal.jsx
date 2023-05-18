@@ -12,13 +12,10 @@ export default function Modal({ selectedImage, tags, onClose }) {
       }
     };
     document.addEventListener('keydown', handleESC);
-    return (
-      () => {
-        document.removeEventListener('keydown', handleESC);
-      },
-      [onClose]
-    );
-  });
+    return () => {
+      document.removeEventListener('keydown', handleESC);
+    };
+  }, [onClose]);
 
   const handleClickBackdrop = e => {
     if (e.target === e.currentTarget) {
