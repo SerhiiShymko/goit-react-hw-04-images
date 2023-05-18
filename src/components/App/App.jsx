@@ -7,6 +7,7 @@ import ImageGallery from 'components/ImageGallery/ImageGallery';
 import Button from 'components/Button/Button';
 import Spiner from 'components/Loader/Loader';
 import Modal from 'components/Modal/Modal';
+
 import axios from 'axios';
 axios.defaults.baseURL = 'https://pixabay.com/api/';
 
@@ -21,11 +22,11 @@ export default function App() {
   const [totalHits, setTotalHits] = useState(null);
 
   useEffect(() => {
-    if (query !== '' && (page === 1 || totalHits > images.length)) {
+    if (query !== '') {
       setStatus('pending');
 
-      try {
-        const fetchImages = async () => {
+      const fetchImages = async () => {
+        try {
           const imageData = await getImages(query, page);
           setTotalHits(imageData.total);
           const imagesHits = imageData.hits;
@@ -46,15 +47,15 @@ export default function App() {
               behavior: 'smooth',
             });
           }
-        };
-        fetchImages();
-      } catch (error) {
-        setError(error);
-        setStatus('rejected');
-        toast.error(`Sorry something went wrong. ${error.message}`);
-      }
+        } catch (error) {
+          setError(error);
+          setStatus('rejected');
+          toast.error(`Sorry something went wrong. ${error.message}`);
+        }
+      };
+      fetchImages();
     }
-  }, [query, page, images.length, totalHits]);
+  }, [query, page]);
 
   const handleFormSubmit = query => {
     resetState();
